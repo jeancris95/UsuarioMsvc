@@ -10,4 +10,5 @@ public interface UsuarioService {
     Optional<Usuario> porId(Long id);
     Usuario guardar(Usuario user);
     void eliminar(Long id);
+    Optional<Usuario> porEmail(String email);
 }

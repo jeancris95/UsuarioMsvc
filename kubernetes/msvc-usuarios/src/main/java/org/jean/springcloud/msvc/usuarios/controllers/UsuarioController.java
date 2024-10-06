@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class UsuarioController {
@@ -49,14 +46,19 @@ public class UsuarioController {
     @PostMapping
     //@ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> crear(@Valid @RequestBody Usuario user, BindingResult result){
+
         if(result.hasErrors()){
             return getMapResponseEntity(result);
+        }
+        if(!user.getEmail().isEmpty() && usuarioService.porEmail(user.getEmail()).isPresent()){
+            return ResponseEntity.badRequest().body(Collections.singletonMap("mensaje","Ya existe un Usuario con ese Email!"));
         }
         return  ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.guardar(user));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> editar(@Valid @RequestBody Usuario user,BindingResult result,@PathVariable Long id) {
+
         if(result.hasErrors()){
             return getMapResponseEntity(result);
         }
@@ -64,6 +66,10 @@ public class UsuarioController {
         Optional<Usuario> userActualizar = usuarioService.porId(id);
         if (userActualizar.isPresent()) {
             Usuario userDb = userActualizar.get();
+            if(!user.getEmail().equalsIgnoreCase(userDb.getEmail()) && usuarioService.porEmail(user.getEmail()).isPresent()){
+                return ResponseEntity.badRequest().body(Collections.singletonMap("mensaje","Ya existe un Usuario con ese Email!"));
+            }
+
             // Usamos el mapper para copiar las propiedades
             usuarioMapper.actualizarUsuario(user, userDb);
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.guardar(userDb));
