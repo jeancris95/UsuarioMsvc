@@ -1,6 +1,9 @@
 package org.jean.springcloud.msvc.cursos.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name="cursos")
@@ -10,6 +13,7 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotBlank
     private String nombre;
 
 

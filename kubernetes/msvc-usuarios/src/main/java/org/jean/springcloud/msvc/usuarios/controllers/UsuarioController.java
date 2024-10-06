@@ -1,15 +1,19 @@
 package org.jean.springcloud.msvc.usuarios.controllers;
 
 import feign.Response;
+import jakarta.validation.Valid;
 import org.jean.springcloud.msvc.usuarios.mappers.UsuarioMapper;
 import org.jean.springcloud.msvc.usuarios.models.entity.Usuario;
 import org.jean.springcloud.msvc.usuarios.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -44,12 +48,19 @@ public class UsuarioController {
      */
     @PostMapping
     //@ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> crear(@RequestBody Usuario user){
+    public ResponseEntity<?> crear(@Valid @RequestBody Usuario user, BindingResult result){
+        if(result.hasErrors()){
+            return getMapResponseEntity(result);
+        }
         return  ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.guardar(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editar(@RequestBody Usuario user,@PathVariable Long id) {
+    public ResponseEntity<?> editar(@Valid @RequestBody Usuario user,BindingResult result,@PathVariable Long id) {
+        if(result.hasErrors()){
+            return getMapResponseEntity(result);
+        }
+
         Optional<Usuario> userActualizar = usuarioService.porId(id);
         if (userActualizar.isPresent()) {
             Usuario userDb = userActualizar.get();
@@ -69,5 +80,13 @@ public class UsuarioController {
                     .build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private static ResponseEntity<Map<String, String>> getMapResponseEntity(BindingResult result) {
+        Map<String,String> errores = new HashMap<>();
+        result.getFieldErrors().forEach(error ->{
+            errores.put(error.getField(),"El campo "+error.getField()+" "+error.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errores);
     }
 }
