@@ -1,9 +1,13 @@
 package org.jean.springcloud.msvc.cursos.entity;
 
+import com.jean.springcloud.msvc.commons.entity.CursoUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="cursos")
@@ -16,6 +20,19 @@ public class Curso {
     @NotBlank
     private String nombre;
 
+    // Relación muchos a muchos a través de la tabla intermedia CursoUsuario
+    @OneToMany(cascade = CascadeType.ALL , orphanRemoval = true)
+    @JoinColumn(name = "curso_id")
+    private List<CursoUsuario> cursoUsuarios = new ArrayList<>();
+
+
+    public List<CursoUsuario> getCursoUsuarios() {
+        return cursoUsuarios;
+    }
+
+    public void setCursoUsuarios(List<CursoUsuario> cursoUsuarios) {
+        this.cursoUsuarios = cursoUsuarios;
+    }
 
     public String getNombre() {
         return nombre;

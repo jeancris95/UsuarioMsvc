@@ -1,10 +1,13 @@
 package org.jean.springcloud.msvc.usuarios.models.entity;
 
 
+import com.jean.springcloud.msvc.commons.entity.CursoUsuario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="usuarios")
@@ -22,6 +25,10 @@ public class Usuario {
     @Email
     private String email;
 
+    // Relación muchos a muchos a través de la tabla intermedia CursoUsuario
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "usuario_id") // Clave foránea en la tabla intermedia
+    private List<CursoUsuario> cursoUsuarios = new ArrayList<>();
 
     @NotBlank
     private String password;
@@ -56,5 +63,14 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    public List<CursoUsuario> getCursoUsuarios() {
+        return cursoUsuarios;
+    }
+
+    public void setCursoUsuarios(List<CursoUsuario> cursoUsuarios) {
+        this.cursoUsuarios = cursoUsuarios;
     }
 }
