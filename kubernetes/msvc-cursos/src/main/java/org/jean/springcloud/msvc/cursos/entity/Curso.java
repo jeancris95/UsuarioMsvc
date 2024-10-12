@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import org.jean.springcloud.msvc.cursos.DTO.UsuarioDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,19 @@ public class Curso {
     @JoinColumn(name = "curso_id")
     private List<CursoUsuario> cursoUsuarios = new ArrayList<>();
 
+    @Transient
+    private List<UsuarioDTO> usuarios=new ArrayList<>();
 
     public List<CursoUsuario> getCursoUsuarios() {
         return cursoUsuarios;
+    }
+
+    public List<UsuarioDTO> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<UsuarioDTO> usuarios) {
+        this.usuarios = usuarios;
     }
 
     public void setCursoUsuarios(List<CursoUsuario> cursoUsuarios) {
@@ -48,5 +59,12 @@ public class Curso {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void addCursoUsuario(CursoUsuario cursoUsuario){
+        cursoUsuarios.add(cursoUsuario);
+    }
+    public void removeCursoUsuario(CursoUsuario cursoUsuario){
+        cursoUsuarios.remove(cursoUsuario);
     }
 }

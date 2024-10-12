@@ -25,11 +25,6 @@ public class Usuario {
     @Email
     private String email;
 
-    // Relación muchos a muchos a través de la tabla intermedia CursoUsuario
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "usuario_id") // Clave foránea en la tabla intermedia
-    private List<CursoUsuario> cursoUsuarios = new ArrayList<>();
-
     @NotBlank
     private String password;
 
@@ -66,11 +61,4 @@ public class Usuario {
     }
 
 
-    public List<CursoUsuario> getCursoUsuarios() {
-        return cursoUsuarios;
-    }
-
-    public void setCursoUsuarios(List<CursoUsuario> cursoUsuarios) {
-        this.cursoUsuarios = cursoUsuarios;
-    }
 }

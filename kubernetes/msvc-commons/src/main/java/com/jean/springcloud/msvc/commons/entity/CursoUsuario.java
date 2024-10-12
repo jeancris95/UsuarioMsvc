@@ -12,13 +12,9 @@ public class CursoUsuario {
     @Column(name = "usuario_id")
     private Long usuarioId;
 
-    @Column(name = "curso_id")
-    private Long cursoId;
-
     public CursoUsuario() {}
 
     public CursoUsuario(Long cursoId, Long usuarioId) {
-        this.cursoId = cursoId;
         this.usuarioId = usuarioId;
     }
 
@@ -38,13 +34,13 @@ public class CursoUsuario {
         this.usuarioId = usuarioId;
     }
 
-    public Long getCursoId() {
-        return cursoId;
-    }
+  //  public Long getCursoId() {
+   //     return cursoId;
+   // }
 
-    public void setCursoId(Long cursoId) {
-        this.cursoId = cursoId;
-    }
+   // public void setCursoId(Long cursoId) {
+   //     this.cursoId = cursoId;
+   // }
 
     @Override
     public boolean equals(Object obj) {
