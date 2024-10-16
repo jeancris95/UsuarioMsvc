@@ -2,11 +2,9 @@ package org.jean.springcloud.msvc.cursos.client;
 
 import org.jean.springcloud.msvc.cursos.DTO.UsuarioDTO;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 //la url se quitara cuando integremos spring cloud
@@ -18,5 +16,8 @@ public interface UsuarioClient {
 
     @PostMapping("/")
     UsuarioDTO crear(@RequestBody UsuarioDTO usuario);
+
+    @GetMapping("/usuarios-por-curso")
+    List<UsuarioDTO> obtenerListaUsuariosPorCurso(@RequestParam Iterable<Long> ids);
 
 }
