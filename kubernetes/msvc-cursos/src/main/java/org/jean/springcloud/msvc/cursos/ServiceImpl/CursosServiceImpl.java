@@ -67,6 +67,12 @@ public class CursosServiceImpl implements CursoService {
 
     @Override
     @Transactional
+    public void eliminarCursoUsuarioPorId(Long id) {
+        cursoRepository.eliminarCursoUsuarioPorId(id);
+    }
+
+    @Override
+    @Transactional
     public Optional<UsuarioDTO> asignarUsuario(UsuarioDTO usuario, Long cursoId) {
         //se busca el curso en la bbdd a traves del id del curso
         Optional<Curso> o=cursoRepository.findById(cursoId);

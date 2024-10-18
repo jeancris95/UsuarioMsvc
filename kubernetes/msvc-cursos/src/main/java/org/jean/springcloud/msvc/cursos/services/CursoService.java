@@ -13,6 +13,7 @@ public interface CursoService  {
     Curso guardar(Curso curso);
     void eliminarCurso(Long id);
     Optional<Curso>porIdConUsuarios(Long id);
+    void eliminarCursoUsuarioPorId(Long id);
     //esto se obtiene de otro servicio
 
     /*
